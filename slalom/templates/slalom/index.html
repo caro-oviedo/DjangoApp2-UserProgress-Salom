@@ -1,0 +1,35 @@
+
+{% extends "slalom/base.html" %} 
+{% block content %}
+
+
+<h1 style="text-align:center"> Slalom Tricks</h1>
+
+<h2 style="text-align:center"> Levels </h2>
+
+
+<div class ="container">
+    <div class="d-grid gap-2 col-6 mx-auto">
+    {%for level in levels %} 
+
+     <a href="{% url 'slalom:level-detail' level.id %}" class="btn btn-dark"> {{ level }} </a> </li>
+
+    {% endfor %} 
+    </div> 
+    <br>    
+    
+
+    <div class="d-grid gap-3 col-6 mx-auto">
+    <form class="row g-3" action="{% url 'slalom:search-tricks' %}" method="GET">
+        {% csrf_token %} 
+        <input class="form-control"  type="search" placeholder="Search" aria-label="Search" name="searched">
+        <button class="btn btn-secondary"  type="submit">Search</button>
+    </form>
+    </div>
+
+
+</div>
+
+
+
+{% endblock content %}

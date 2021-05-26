@@ -1,0 +1,38 @@
+
+{% extends "slalom/base.html" %} 
+{% load static %}
+{% load embed_video_tags %}
+{% block content %}
+<br>
+<a href="{% url 'slalom:level-detail' trick.level.number %}" class="btn btn-secondary" aria-current="page"> Level {{trick.level.number}} </a>
+
+ <h1> {{ trick }}  <small>  level {{ trick.level.number }} </small> </h1>
+
+
+
+
+<form action="{% url 'slalom:trick-detail'  trick.id %}" method='POST'>
+    {% csrf_token %} 
+    {{ form }}
+    <input type="submit" value="Save"> 
+    {% if form.complete == True %} 
+    <p> complete </p>
+    {% endif %}
+
+</form> 
+
+
+{% video trick.video1 %} 
+<p> <a href='{{ trick.link_video1 }}'> Watch on youtube</a> </p>
+
+<a href ="{% static '/videos/Fishforward SlalomTricks.mp4'%}" download> Download</a>
+
+{% video trick.video2 %}
+<p> <a href='{{ trick.link_video2 }}'> Watch on youtube</a> </p>
+
+{% video trick.video3 %}
+<p> <a href='{{ trick.link_video3 }}'> Watch on youtube</a> </p>
+
+    
+
+{% endblock content %}

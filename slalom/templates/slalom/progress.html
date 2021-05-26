@@ -1,0 +1,117 @@
+
+{% extends "slalom/base.html" %} 
+{% load static %}
+{% block content %}
+
+</br>
+<a href="{% url 'slalom:index' %}" class="btn btn-secondary" aria-current="page"> Back </a>
+
+<h1> Progress <small> {{ user.username }} </small></h1> 
+<br>
+<div > 
+<input type="text" id="myInput" onkeyup="searchTrick()" placeholder="Search for trick.." title="Type in a name">
+<input type="text" id="myInput2" onkeyup="searchLevel()" placeholder="Search for level.." title="Type in a name">
+</div>
+<br> 
+    <table id="myTable" class="table table-striped"> 
+        <tr> 
+            <th>Trick </th>
+            <th> Complete </th>
+            <th> Level </th>
+            <th> Date completed</th>
+        </tr>
+        {% for object in object_list%}
+        {% if object.owner.id == user.id %}
+        {% if object.complete == True %}
+        <tr>
+            <td> <a href="{% url 'slalom:trick-detail' object.trick.id %}" > {{ object.trick }} </a> </td>
+            <td> {{ object.complete }} </td>
+            <td> {{ object.trick.level }} </td>
+            <td> {{ object.date_completed }} </td>
+        </tr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </table>
+
+    <p> To do </p>
+    <table id="myTable2" class="table table-striped"> 
+        <tr> 
+            <th>Trick </th>
+            <th> Complete </th>
+            <th> Level </th>
+            <th> Date completed</th>
+        </tr>
+        {% for object in object_list%}
+        {% if object.owner.id == user.id %}
+        {% if object.complete == False %}
+        <tr>
+            <td> <a href="{% url 'slalom:trick-detail' object.trick.id %}" > {{ object.trick }} </a> </td>
+            <td> {{ object.complete }} </td>
+            <td> {{ object.trick.level }} </td>
+            <td> ---- </td>
+        </tr>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </table>
+
+
+    <script>
+        function searchTrick() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+            }       
+        }
+        }
+
+        function searchLevel() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput2");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+            }       
+        }
+        }
+    </script>
+    
+    
+
+
+
+<!--    
+<ul>
+{% for object in object_list%}
+{% if object.owner.id == user.id %}
+
+    
+    <li> <span> <strong> {{ object.trick }} </strong></span>  {{ object.complete }} {{ object.date_completed}} </li>
+    
+{% endif %}
+{% endfor %}
+</ul>
+-->
+
+{% endblock content %}

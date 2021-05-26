@@ -1,0 +1,19 @@
+
+{% extends "slalom/base.html" %} 
+{% block content %}
+
+<a href="{% url 'slalom:index' %}" class="btn btn-secondary" aria-current="page"> Back </a>
+<br>
+<h1> Results  </h1>
+
+<ul>
+
+{% for trick in tricks %} 
+    <li>
+        <a href="{% url 'slalom:trick-detail' trick.id %}" > {{ trick.name }} </a>
+    </li> 
+{% endfor %}
+</ul>
+
+
+{% endblock content %}

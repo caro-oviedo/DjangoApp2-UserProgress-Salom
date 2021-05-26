@@ -1,0 +1,16 @@
+
+{% extends "slalom/base.html" %} 
+{% block content %}
+
+<a href="{% url 'slalom:index' %}" class="btn btn-secondary" aria-current="page"> Back </a>
+
+<h1> Level {{ level.number }} </h1>
+
+{% for trick in tricks %} 
+    {% if trick.level.number == level.number %}
+        <p> <a href="{% url 'slalom:trick-detail' trick.id %}" > {{ trick.name }} </p></a>
+    {% endif %} 
+{% endfor %}
+
+
+{% endblock content %}

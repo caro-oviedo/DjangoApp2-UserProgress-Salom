@@ -1,0 +1,14 @@
+{% extends "slalom/base.html" %} 
+{% block content %}
+
+<form method ="POST" >
+    {% csrf_token %} 
+    <p> Log in </p>
+     {{ form.as_p }}
+
+     <button type="submit"> Log In </button>
+     <p> Need an account? <a href="{% url 'register' %}"> Sign Up Now</a></p>
+
+</form>
+
+{% endblock content %} 

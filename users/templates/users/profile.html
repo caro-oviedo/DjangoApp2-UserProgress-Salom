@@ -1,0 +1,17 @@
+{% extends "slalom/base.html" %} 
+{% block content %}
+
+<h1> {{ user.username }} </h1>
+
+<form method ="POST" >
+    {% csrf_token %} 
+    <p> Edit your profile information</p>
+     {{ u_form.as_p }}
+     {{ p_form.as_p }}
+
+     <button type="submit"> Update </button>
+     
+</form>
+
+
+{% endblock content %} 
