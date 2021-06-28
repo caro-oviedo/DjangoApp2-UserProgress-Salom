@@ -16,40 +16,40 @@ def index(request):
 """ 
 @login_required
 def trick_detail(request, trick_id):
-    trick  = Trick.objects.get(id=trick_id)  #el truco que elijo para practicar
-    progress = Done.objects.filter(owner=request.user)  # guardo todos los trucos que estan la db  "progreso"
-    edit_id = 0                                         # la voy a usar dps
+    trick  = Trick.objects.get(id=trick_id)  
+    progress = Done.objects.filter(owner=request.user)  
+    edit_id = 0                                         
     
-    trick_exists = False         # inicializo en false
-    for pro in progress:        # hago un loop por los trucos que el usuario tiene
-        if pro.trick_id == trick.id:    #chequeo si el truco ya esta  en la db "progreso"
-            trick_exists = True         #si existe guardo la flag en True
-            edit_id = pro.id            # gruardo el id del registro en la db "prgreso" para ese truco
+    trick_exists = False         
+    for pro in progress:        
+        if pro.trick_id == trick.id:    
+            trick_exists = True         
+            edit_id = pro.id            
 
     
-    if request.method !='POST':     #si el usuario no envia informacion, solo carga la pagina y 
-        if trick_exists:            # si el truco existe en la db "progreso",
-            edit_progress = progress.get(id=edit_id)    #cargo la info que ya esta en la db "progreso"
-            form = CompleteTrick(instance=edit_progress) #lo mando al formulario HTML
+    if request.method !='POST':     
+        if trick_exists:            
+            edit_progress = progress.get(id=edit_id)    
+            form = CompleteTrick(instance=edit_progress) 
         else:
-            form = CompleteTrick() # Si el truco no existe en la db "progreso", mando un formulario HTML vacio.
+            form = CompleteTrick() 
     else:
-        if trick_exists == False:   #si el usuario manda request (clickea "save") y el truco no esta en la DB"progress"
-            form = CompleteTrick(data=request.POST) #guardo la info del request en el formulario
+        if trick_exists == False:   
+            form = CompleteTrick(data=request.POST) 
             if form.is_valid():
-                new_progress = form.save(commit=False)   #guardo datos para el nuevo registro en "progreso"
+                new_progress = form.save(commit=False)   
                 new_progress.trick = trick 
                 new_progress.owner = request.user
                 new_progress.save()
-        else:                                   #si el usuario manda request y el  truco esta en la DB  progress ,
-            edit_progress = progress.get(id=edit_id)       # recupero la indo de la DB progress
-            form = CompleteTrick(instance=edit_progress)     # creo formulario para HTML
+        else:                                   
+            edit_progress = progress.get(id=edit_id)       
+            form = CompleteTrick(instance=edit_progress)     
             if form.is_valid:                               
-                edit_progress = form.save(commit=False)     # creo una instancia del formulario para EDITARLO
-                if edit_progress.complete == True:        # si "complete" esta guardada en T la paso a F
+                edit_progress = form.save(commit=False)     
+                if edit_progress.complete == True:        
                     edit_progress.complete = False      
                 else:
-                    edit_progress.complete = True       # si "complete" esta en F lo paso a T 
+                    edit_progress.complete = True       
                 edit_progress.save()  
                 form = CompleteTrick(instance=edit_progress)
             return redirect('slalom:progress')
@@ -104,45 +104,6 @@ class TricksListView(ListView):
         
         return context 
 
-    
-
-"""
-class DetailTrickView(DetailView):
-    model = Trick
-
-    def get_context_data(self,**kwargs):
-        context = super(DetailTrickView, self).get_context_data(**kwargs)
-        context['levels'] = Level.objects.all()
-        context['dones'] = Done.objects.all()
-        
-        return context 
-""" 
-
-
-
-"""
-class DoneCreateView(CreateView):
-    model = Done
-    fields = ['complete']
-
-
-    def get_context_data(self,**kwargs):
-        context = super(DoneCreateView, self).get_context_data(**kwargs)
-        context['levels'] = Level.objects.all()
-        context['tricks'] = Trick.objects.all()
-        return context 
-
-    
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        form.instance.trick = trick.id
-        return super().form_valid(form)
-
-
-"""
-
-
-    
 
 
 
